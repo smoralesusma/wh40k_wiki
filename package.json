@@ -1,0 +1,41 @@
+{
+  "name": "next-wh40k-wiki",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@apollo/client": "^3.11.5",
+    "@apollo/server": "^4.11.0",
+    "@as-integrations/next": "^3.1.0",
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
+    "@mui/icons-material": "^6.0.1",
+    "@mui/material": "^6.0.1",
+    "@next-auth/prisma-adapter": "^1.0.7",
+    "bcrypt": "^5.1.1",
+    "gql-query-builder": "^3.8.0",
+    "graphql": "^16.9.0",
+    "next": "14.2.7",
+    "next-auth": "^4.24.7",
+    "pg": "^8.12.0",
+    "pg-hstore": "^2.3.4",
+    "pg-promise": "^11.9.1",
+    "react": "^18",
+    "react-dom": "^18"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/node": "^20",
+    "@types/pg": "^8.11.8",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.7",
+    "typescript": "^5"
+  }
+}
