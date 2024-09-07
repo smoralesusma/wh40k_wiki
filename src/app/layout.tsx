@@ -6,7 +6,6 @@ import GraphQLProvider from "@/lib/providers/graphql.provider";
 import theme from "@/lib/providers/theme.provider";
 
 import "./globals.css";
-import NextAuthSessionProvider from "@/lib/providers/next.provider";
 
 export const metadata: Metadata = {
   title: "The Horus Heresy Chronicles",
@@ -17,14 +16,12 @@ const RootLayout: FCC = ({ children }) => {
   return (
     <html lang="en">
       <body>
-        <NextAuthSessionProvider>
           <GraphQLProvider>
             <ThemeProvider theme={theme}>
               <CssBaseline />
               {children}
             </ThemeProvider>
           </GraphQLProvider>
-        </NextAuthSessionProvider>
       </body>
     </html>
   );

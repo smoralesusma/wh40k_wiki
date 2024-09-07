@@ -1,114 +1,122 @@
-/* import React, { useState } from 'react';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography } from '@mui/material';
-import { signIn } from 'next-auth/react';
-import axios from 'axios';
+import { FC, useState } from "react";
+import {
+  TextField,
+  Grid2 as Grid,
+  Box,
+  Typography,
+  Link,
+  Alert,
+} from "@mui/material";
+import { useRouter } from "next/router";
+import Mutation from "../mutation";
+import { GraphQLQueryNames } from "@/lib/graphql/graphql-query-enums";
+import { USER_LOGIN, USER_SIGNIN } from "@/lib/graphql/mutations";
 
-const LoginButton = () => {
-  const [open, setOpen] = useState(false);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [isSignUp, setIsSignUp] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+const AuthForm: FC = () => {
+  const [isLogin, setIsLogin] = useState(true);
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+    username: "",
+  });
+  const [error, setError] = useState("");
+  const router = useRouter();
 
-  const handleClickOpen = () => {
-    setOpen(true);
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
   };
 
-  const handleClose = () => {
-    setOpen(false);
-    setEmail('');
-    setPassword('');
-    setIsSignUp(false);
-    setError(null);
-  };
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    if (
+      !formData.email ||
+      !formData.password ||
+      (!isLogin && !formData.username)
+    ) {
+      setError("Please complete all fields.");
+      return;
+    }
 
-  const handleAuth = async () => {
-    setLoading(true);
-    setError(null);
     try {
-      if (isSignUp) {
-        // Call the API for signup
-        await fetch('/api/auth/signup', { email, password });
-        // Optionally, auto-login after signup
-        await signIn('credentials', {
-          redirect: false,
-          email,
-          password,
-        });
-      } else {
-        // Sign in the user
-        const result = await signIn('credentials', {
-          redirect: false,
-          email,
-          password,
-        });
-
-        if (!result?.ok) {
-          throw new Error(result?.error || 'Login failed');
-        }
-      }
-      handleClose();
+      router.push("/");
     } catch (err) {
-      setError((err as Error).message);
-    } finally {
-      setLoading(false);
+      setError("Error during authentication");
     }
   };
 
   return (
-    <div>
-      <Button variant="contained" color="primary" onClick={handleClickOpen}>
-        {isSignUp ? 'Sign Up' : 'Login'}
-      </Button>
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>{isSignUp ? 'Sign Up' : 'Login'}</DialogTitle>
-        <DialogContent>
-          {error && <Typography color="error">{error}</Typography>}
+    <Box sx={{ mt: 4 }}>
+      <Typography component="h1" variant="h5" textAlign="center">
+        {isLogin ? "Sign In" : "Sign Up"}
+      </Typography>
+      <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
+        {error && <Alert severity="error">{error}</Alert>}
+        <Mutation
+          handleData={handleSubmit}
+          handleError={() => {}}
+          queryName={
+            isLogin
+              ? GraphQLQueryNames.USER_LOGIN
+              : GraphQLQueryNames.USER_SIGNUP
+          }
+          queryString={isLogin ? USER_LOGIN : USER_SIGNIN}
+          variables={formData}
+        >
+          {!isLogin && (
+            <TextField
+              margin="normal"
+              fullWidth
+              id="username"
+              label="Username"
+              name="username"
+              autoComplete="username"
+              value={formData.username}
+              onChange={handleInputChange}
+              autoFocus
+            />
+          )}
           <TextField
-            autoFocus
-            margin="dense"
-            label="Email Address"
-            type="email"
+            margin="normal"
             fullWidth
-            variant="outlined"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            id="email"
+            label="Email Address"
+            name="email"
+            autoComplete="email"
+            value={formData.email}
+            onChange={handleInputChange}
           />
           <TextField
-            margin="dense"
+            margin="normal"
+            fullWidth
+            name="password"
             label="Password"
             type="password"
-            fullWidth
-            variant="outlined"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            id="password"
+            autoComplete="current-password"
+            value={formData.password}
+            onChange={handleInputChange}
           />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Cancel
-          </Button>
-          <Button
-            onClick={handleAuth}
-            color="primary"
-            disabled={loading}
-          >
-            {loading ? 'Loading...' : isSignUp ? 'Sign Up' : 'Login'}
-          </Button>
-        </DialogActions>
-        <DialogActions>
-          <Button
-            onClick={() => setIsSignUp(!isSignUp)}
-            color="secondary"
-          >
-            {isSignUp ? 'Already have an account? Login' : 'Don\'t have an account? Sign Up'}
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </div>
+        </Mutation>
+        <Grid container justifyContent="flex-end">
+          <Grid>
+            <Link
+              variant="body2"
+              onClick={() => setIsLogin(!isLogin)}
+              sx={{ cursor: "pointer" }}
+            >
+              {isLogin
+                ? "Don't have an account? Sign Up"
+                : "Already have an account? Sign In"}
+            </Link>
+          </Grid>
+        </Grid>
+      </Box>
+    </Box>
   );
 };
 
-export default LoginButton;
- */
+export default AuthForm;

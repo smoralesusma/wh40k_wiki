@@ -1,9 +1,11 @@
 import { ApolloServer } from "@apollo/server";
 import { startServerAndCreateNextHandler } from "@as-integrations/next";
+import { PrismaClient } from "@prisma/client";
 
 import { resolvers } from "./resolvers";
 import { typeDefs } from "./schema";
-// import allowCors from "../../../../lib/cors";
+
+const prisma = new PrismaClient();
 
 const apolloServer = new ApolloServer({
   typeDefs,
@@ -11,7 +13,7 @@ const apolloServer = new ApolloServer({
 });
 
 const handler = startServerAndCreateNextHandler(apolloServer, {
-  context: async (req, res) => ({ req, res }),
+  context: async (req, res) => ({ req, res, prisma }),
 });
 
 export const config = {

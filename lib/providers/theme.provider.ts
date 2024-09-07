@@ -51,20 +51,6 @@ const theme = createTheme({
   },
   typography: {
     fontFamily: "Roboto, Arial, sans-serif",
-    h1: {
-      fontSize: "3rem",
-      fontWeight: "bold",
-      color: "#f5f5f5",
-    },
-    h2: {
-      fontSize: "2rem",
-      fontWeight: "300",
-      color: "#b3b3b3",
-    },
-    body1: {
-      fontSize: "1.1rem",
-      color: "#d3d3d3",
-    },
   }
 });
 

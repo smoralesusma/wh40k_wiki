@@ -1,21 +1,23 @@
 import { gql } from "@apollo/client";
-import { CharacterFields, GraphQLQueryNames } from "@/lib/graphql/graphql-query-enums";
+import { GraphQLQueryNames } from "@/lib/graphql/graphql-query-enums";
 
 export const typeDefs = gql`
-  type Character {
-    ${CharacterFields.ID}: ID!
-    ${CharacterFields.NAME}: String!
-    ${CharacterFields.DESC}: String
+  type User {
+    id: ID!
+    username: String!
+    email: String!
+    role: String!
+    createdAt: String!
+    updatedAt: String!
   }
 
-  type Query {
-    ${GraphQLQueryNames.GET_CHARACTER}(${CharacterFields.ID}: ID!): Character
-    ${GraphQLQueryNames.GET_CHARACTERS}: [Character]
+  type AuthPayload {
+    token: String!
+    user: User!
   }
 
   type Mutation {
-    ${GraphQLQueryNames.CREATE_CHARACTER}(${CharacterFields.NAME}: String!, ${CharacterFields.DESC}: String): Character
-    ${GraphQLQueryNames.UPDATE_CHARACTER}(${CharacterFields.ID}: ID!, ${CharacterFields.NAME}: String, ${CharacterFields.DESC}: String): Character
-    ${GraphQLQueryNames.DELETE_CHARACTER}(${CharacterFields.ID}: ID!): Boolean
+    ${GraphQLQueryNames.USER_SIGNUP}(username: String!, email: String!, password: String!): AuthPayload!
+    ${GraphQLQueryNames.USER_LOGIN}(emailOrUsername: String!, password: String!): AuthPayload!
   }
 `;

@@ -6,6 +6,7 @@ import { DocumentNode, useMutation } from "@apollo/client";
 import SnackbarAlert from "@/src/components/snackbar-alert";
 import { GraphQLQueryNames } from "@/lib/graphql/graphql-query-enums";
 import { FCC } from "@/lib/types/tools.types";
+import SubmitButton from "./submit-button";
 
 interface MutationProps {
   queryString: DocumentNode;
@@ -52,12 +53,10 @@ const Mutation: FCC<MutationProps> = ({
           }}
         >
           {children}
-          {/* <SubmitButton loading={loading} /> */}
+          <SubmitButton loading={loading} />
         </form>
       ) : (
-        {
-          /* <SubmitButton loading={loading} handleClick={handleMutation} /> */
-        }
+        <SubmitButton loading={loading} handleClick={handleMutation} />
       )}
 
       <SnackbarAlert
