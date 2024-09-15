@@ -8,7 +8,7 @@ import { users } from "@prisma/client";
 
 export const resolvers = {
   Query: {
-    [GraphQLQueryNames.GET_CHARACTER]: async (
+    /* [GraphQLQueryNames.GET_CHARACTER]: async (
       _: any,
       { id }: { id: number },
       context: GraphqlContext
@@ -17,10 +17,11 @@ export const resolvers = {
       _: any,
       {}: any,
       context: GraphqlContext
-    ) => context.prisma.characters.findMany(),
+    ) => context.prisma.characters.findMany(), */
   },
   Mutation: {
     [GraphQLQueryNames.USER_SIGNUP]: async (
+      _: any,
       args: { username: string; email: string; password: string },
       context: GraphqlContext
     ): Promise<{ token: string; user: users }> => {
@@ -65,6 +66,7 @@ export const resolvers = {
     },
 
     [GraphQLQueryNames.USER_LOGIN]: async (
+      _: any,
       args: { emailOrUsername: string; password: string },
       context: GraphqlContext
     ): Promise<{ token: string; user: users }> => {

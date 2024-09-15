@@ -11,7 +11,7 @@ import { FC } from "react";
 import spaceBackground from "@/public/home/background.jpg";
 import Link from "next/link";
 import { SectionsRoutes } from "../enums/routes.enum";
-// import LoginButton from "../components/login/login-button";
+import AuthButton from "../components/auth/auth-button";
 
 const Home: FC = () => {
   return (
@@ -49,7 +49,7 @@ const Home: FC = () => {
             <Typography variant="h2">
               Unveiling the Epic Saga of Warhammer 40,000
             </Typography>
-            {/* <LoginButton /> */}
+            <AuthButton />
           </Grid>
           <Grid
             size={12}

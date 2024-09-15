@@ -12,6 +12,7 @@ interface MutationProps {
   queryString: DocumentNode;
   queryName: GraphQLQueryNames;
   variables?: any;
+  buttonText?: string;
   successMessage?: string;
   errorMessage?: string;
   handleData: (data: any) => void;
@@ -23,6 +24,7 @@ const Mutation: FCC<MutationProps> = ({
   queryString,
   queryName,
   variables,
+  buttonText="Create",
   successMessage = "Done!",
   errorMessage = "Something went wrong! Please try again.",
   handleData,
@@ -38,6 +40,10 @@ const Mutation: FCC<MutationProps> = ({
   }, [data, error]);
 
   const handleMutation = async () => {
+    console.log(queryName);
+    console.log(queryString);
+    console.log(variables);
+    
     try {
       await addTodo({ variables });
     } catch {}
@@ -53,10 +59,10 @@ const Mutation: FCC<MutationProps> = ({
           }}
         >
           {children}
-          <SubmitButton loading={loading} />
+          <SubmitButton loading={loading} buttonText={buttonText} />
         </form>
       ) : (
-        <SubmitButton loading={loading} handleClick={handleMutation} />
+        <SubmitButton loading={loading} handleClick={handleMutation} buttonText={buttonText} />
       )}
 
       <SnackbarAlert

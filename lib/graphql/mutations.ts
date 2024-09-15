@@ -2,8 +2,8 @@ import getGQLStringQuery from "./graphql-query-builder";
 import { GraphQLQueryNames } from "./graphql-query-enums";
 
 export const USER_LOGIN = getGQLStringQuery(
-  "query",
-  GraphQLQueryNames.GET_CHARACTERS,
+  "mutation",
+  GraphQLQueryNames.USER_LOGIN,
   ["token", "user"],
   {
     username: { type: "String!" },
@@ -12,9 +12,9 @@ export const USER_LOGIN = getGQLStringQuery(
   }
 );
 
-export const USER_SIGNIN = getGQLStringQuery(
-  "query",
-  GraphQLQueryNames.GET_CHARACTERS,
+export const USER_SIGNUP = getGQLStringQuery(
+  "mutation",
+  GraphQLQueryNames.USER_SIGNUP,
   ["token", "user"],
   {
     emailOrUsername: { type: "String!" },

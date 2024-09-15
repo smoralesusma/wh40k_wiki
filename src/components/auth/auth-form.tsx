@@ -9,36 +9,46 @@ import {
   Link,
   Alert,
 } from "@mui/material";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import Mutation from "../mutation";
 import { GraphQLQueryNames } from "@/lib/graphql/graphql-query-enums";
-import { USER_LOGIN, USER_SIGNIN } from "@/lib/graphql/mutations";
+import { USER_LOGIN, USER_SIGNUP } from "@/lib/graphql/mutations";
 
 const AuthForm: FC = () => {
   const [isLogin, setIsLogin] = useState(true);
-  const [formData, setFormData] = useState({
+  const [formDataLogin, setFormDataLogin] = useState({
+    emailOrUsername: "",
+    password: "",
+  });
+  const [formDataSignup, setFormDataSignup] = useState({
+    username: "",
     email: "",
     password: "",
-    username: "",
   });
   const [error, setError] = useState("");
   const router = useRouter();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    isLogin
+      ? setFormDataLogin({
+          ...formDataLogin,
+          [e.target.name]: e.target.value,
+        })
+      : setFormDataSignup({
+          ...formDataSignup,
+          [e.target.name]: e.target.value,
+        });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (data: any) => {
+    const isError = isLogin
+      ? !formDataLogin.emailOrUsername || !formDataLogin.password
+      : !formDataSignup.email ||
+        !formDataSignup.username ||
+        !formDataSignup.password;
+
     setError("");
-    if (
-      !formData.email ||
-      !formData.password ||
-      (!isLogin && !formData.username)
-    ) {
+    if (isError) {
       setError("Please complete all fields.");
       return;
     }
@@ -55,7 +65,7 @@ const AuthForm: FC = () => {
       <Typography component="h1" variant="h5" textAlign="center">
         {isLogin ? "Sign In" : "Sign Up"}
       </Typography>
-      <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
+      <Box sx={{ mt: 2 }}>
         {error && <Alert severity="error">{error}</Alert>}
         <Mutation
           handleData={handleSubmit}
@@ -65,8 +75,9 @@ const AuthForm: FC = () => {
               ? GraphQLQueryNames.USER_LOGIN
               : GraphQLQueryNames.USER_SIGNUP
           }
-          queryString={isLogin ? USER_LOGIN : USER_SIGNIN}
-          variables={formData}
+          queryString={isLogin ? USER_LOGIN : USER_SIGNUP}
+          variables={isLogin ? formDataLogin : formDataSignup}
+          buttonText={isLogin ? "Log In" : "Sign Up"}
         >
           {!isLogin && (
             <TextField
@@ -76,7 +87,7 @@ const AuthForm: FC = () => {
               label="Username"
               name="username"
               autoComplete="username"
-              value={formData.username}
+              value={formDataSignup.username}
               onChange={handleInputChange}
               autoFocus
             />
@@ -88,7 +99,9 @@ const AuthForm: FC = () => {
             label="Email Address"
             name="email"
             autoComplete="email"
-            value={formData.email}
+            value={
+              isLogin ? formDataLogin.emailOrUsername : formDataSignup.email
+            }
             onChange={handleInputChange}
           />
           <TextField
@@ -99,7 +112,7 @@ const AuthForm: FC = () => {
             type="password"
             id="password"
             autoComplete="current-password"
-            value={formData.password}
+            value={isLogin ? formDataLogin.password : formDataSignup.password}
             onChange={handleInputChange}
           />
         </Mutation>
@@ -107,7 +120,11 @@ const AuthForm: FC = () => {
           <Grid>
             <Link
               variant="body2"
-              onClick={() => setIsLogin(!isLogin)}
+              onClick={() => {
+                setIsLogin(!isLogin);
+                setFormDataLogin({ emailOrUsername: "", password: "" });
+                setFormDataSignup({ username: "", email: "", password: "" });
+              }}
               sx={{ cursor: "pointer" }}
             >
               {isLogin

@@ -16,6 +16,26 @@ export const typeDefs = gql`
     user: User!
   }
 
+  type Character {
+    id: Int!
+    name: String!
+    description: String
+    background: String
+    role: String
+  }
+
+  type Article {
+    id: Int!
+    title: String!
+    type: String!
+    url_id: String!
+    characters: [Character!]!
+  }
+
+  type Query {
+    ${GraphQLQueryNames.GET_CHARACTER}(id: ID!): Article!
+  }
+
   type Mutation {
     ${GraphQLQueryNames.USER_SIGNUP}(username: String!, email: String!, password: String!): AuthPayload!
     ${GraphQLQueryNames.USER_LOGIN}(emailOrUsername: String!, password: String!): AuthPayload!
