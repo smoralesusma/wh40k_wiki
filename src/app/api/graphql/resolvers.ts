@@ -45,7 +45,7 @@ export const resolvers = {
         },
       });
 
-      const token = sign({ userId: user.id }, process.env.APP_SECRET ?? "", {
+      const token = sign({ userId: user.id }, process.env.NEXTAUTH_SECRET ?? "", {
         expiresIn: "1d",
       });
 
@@ -86,7 +86,7 @@ export const resolvers = {
         throw new Error("Invalid password");
       }
 
-      const token = sign({ userId: user.id }, process.env.APP_SECRET ?? "", {
+      const token = sign({ userId: user.id }, process.env.NEXTAUTH_SECRET ?? "", {
         expiresIn: "1d",
       });
 

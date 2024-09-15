@@ -6,8 +6,7 @@ export const USER_LOGIN = getGQLStringQuery(
   GraphQLQueryNames.USER_LOGIN,
   ["token", "user"],
   {
-    username: { type: "String!" },
-    email: { type: "String!" },
+    emailOrUsername: { type: "String!" },
     password: { type: "String!" },
   }
 );
